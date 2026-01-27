@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manual dos Mitos | Seu Canal</title>
+
+  <meta name="description" content="Manual dos Mitos: Nórdica, Grega, Egípcia, Asteca, Inca, Japonesa e mais. Assista aos vídeos do YouTube diretamente no site, com visual clássico de museu." />
+  <meta name="robots" content="index,follow" />
+
+  <!-- =========================
+    ✅ VISUAL “MUSEU”
+    - mármore / bronze / pergaminho
+    - estátuas / pirâmide / escudo viking em silhuetas (CSS)
+    - menu à esquerda com botões para abas
+    - vídeos embutidos (não abre YouTube)
+    ========================= -->
+  <style>
+    :root{
+      --bg0:#07070a;
+      --bg1:#0b0b10;
+      --marble:#f2ead6;           /* tom pergaminho/mármore */
+      --text: rgba(245,238,220,0.92);
+      --muted: rgba(245,238,220,0.64);
+
+      --panel: rgba(255,255,255,0.05);
+      --panel2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.12);
+
+      --gold:#caa24b;
+      --gold2:#e6cf88;
+      --runic:#6fd4ff;
+
+      --shadow: 0 18px 50px rgba(0,0,0,0.62);
+      --shadow2: 0 10px 28px rgba(0,0,0,0.38);
+    }
+
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 600px at 70% 20%, rgba(202,162,75,0.14), transparent 60%),
+        radial-gradient(900px 520px at 20% 80%, rgba(111,212,255,0.10), transparent 65%),
+        radial-gradient(800px 520px at 80% 78%, rgba(230,207,136,0.10), transparent 62%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+    }
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;}
+
+    .app{
+      min-height:100%;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+    }
+
+    /* =========================
+       SIDEBAR (esquerda)
+       ========================= */
+    .sidebar{
+      padding:18px;
+      border-right:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      position:sticky;
+      top:0;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .brand{
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(120% 90% at 20% 20%, rgba(230,207,136,0.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.22));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    /* friso “museu” */
+    .brand::before{
+      content:"";
+      position:absolute;
+      left:0; right:0; top:0;
+      height:10px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(202,162,75,0.95) 0 10px,
+        rgba(202,162,75,0.10) 10px 18px
+      );
+      opacity:0.50;
+    }
+    .brand-top{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .sigil{
+      width:46px;height:46px;
+      border-radius:16px;
+      display:grid;place-items:center;
+      border:1px solid rgba(202,162,75,0.45);
+      background: radial-gradient(circle at 30% 30%, rgba(230,207,136,0.22), rgba(0,0,0,0.30));
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.20);
+      font-weight:950;
+      letter-spacing:0.6px;
+      color: rgba(230,207,136,0.95);
+      user-select:none;
+    }
+    .brand-title{
+      font-weight:950;
+      letter-spacing:0.4px;
+      font-size:16px;
+    }
+    .brand-sub{
+      margin-top:4px;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .menu-btn{
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.22);
+      color: var(--text);
+      cursor:pointer;
+      text-align:left;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      position:relative;
+      overflow:hidden;
+      font-weight:900;
+      letter-spacing:0.2px;
+    }
+    /* detalhe “bronze” na lateral do botão */
+    .menu-btn::before{
+      content:"";
+      position:absolute;
+      left:-18px; top:12px;
+      width: 92px; height: 26px;
+      transform: rotate(-12deg);
+      border-radius: 8px;
+      background: linear-gradient(90deg, rgba(202,162,75,0.95), rgba(111,212,255,0.80));
+      opacity: 0.40;
+    }
+    .menu-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(202,162,75,0.35);
+      background: rgba(202,162,75,0.08);
+    }
+    .menu-btn.active{
+      border-color: rgba(111,212,255,0.35);
+      background: rgba(111,212,255,0.10);
+    }
+
+    .search{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      box-shadow: var(--shadow2);
+    }
+    .search span{color:var(--muted);font-weight:950;}
+    .search input{
+      width:100%;
+      border:0;
+      outline:0;
+      background:transparent;
+      color: var(--text);
+      font-size:14px;
+    }
+    .clear{
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      padding:8px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .clear:hover{
+      border-color: rgba(202,162,75,0.40);
+      background: rgba(202,162,75,0.10);
+      color: var(--text);
+    }
+
+    .sidebar-foot{
+      margin-top:auto;
+      padding:12px;
+      border-radius:14px;
+      border:1px dashed rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    /* =========================
+       MAIN
+       ========================= */
+    .main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      padding:14px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(10px);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .topbar-title{
+      font-weight:950;
+      letter-spacing:0.4px;
+      color: rgba(230,207,136,0.92);
+    }
+    .crumb{
+      color: var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+
+    /* =========================
+       HERO (museu / templo)
+       ========================= */
+    .hero{
+      padding:18px;
+    }
+    .hero-stage{
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background:
+        radial-gradient(120% 80% at 30% 20%, rgba(230,207,136,0.14), transparent 60%),
+        radial-gradient(100% 70% at 75% 75%, rgba(111,212,255,0.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.30));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      padding: 18px;
+    }
+
+    /* “mármore” do palco */
+    .hero-stage::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(700px 400px at 20% 25%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(700px 420px at 80% 70%, rgba(255,255,255,0.05), transparent 62%),
+        repeating-linear-gradient(
+          120deg,
+          rgba(255,255,255,0.03) 0px,
+          rgba(255,255,255,0.03) 2px,
+          rgba(0,0,0,0.00) 8px,
+          rgba(0,0,0,0.00) 22px
+        );
+      opacity: 0.35;
+      pointer-events:none;
+    }
+
+    .hero-grid{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    /* “silhuetas” do museu: estátua, pirâmide, escudo viking */
+    .museum-art{
+      position:absolute;
+      inset: 0;
+      pointer-events:none;
+      z-index:1;
+      opacity:0.32;
+    }
+    .statue, .pyramid, .shield{
+      position:absolute;
+      filter: drop-shadow(0 18px 35px rgba(0,0,0,0.55));
+    }
+    /* estátua (coluna + busto) */
+    .statue{
+      left: 22px;
+      bottom: 14px;
+      width: 210px;
+      height: 260px;
+      background:
+        linear-gradient(180deg, rgba(245,238,220,0.18), rgba(0,0,0,0.35));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      overflow:hidden;
+    }
+    .statue::before{
+      content:"";
+      position:absolute;
+      left: 50%;
+      top: 20px;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 60px 60px 48px 48px;
+      background: rgba(245,238,220,0.14);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .statue::after{
+      content:"";
+      position:absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 18px;
+      height: 72px;
+      border-radius: 14px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.05) 0 6px,
+          rgba(0,0,0,0.00) 6px 14px
+        );
+      border: 1px solid rgba(255,255,255,0.08);
+      opacity: 0.75;
+    }
+
+    /* pirâmide */
+    .pyramid{
+      right: 30px;
+      bottom: 20px;
+      width: 220px;
+      height: 160px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      background:
+        linear-gradient(135deg, rgba(202,162,75,0.22), rgba(0,0,0,0.35));
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    /* escudo viking */
+    .shield{
+      right: 260px;
+      top: 26px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(111,212,255,0.18), rgba(0,0,0,0.40));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: inset 0 0 0 8px rgba(202,162,75,0.16);
+    }
+    .shield::before{
+      content:"";
+      position:absolute;
+      inset: 18px;
+      border-radius: 50%;
+      border: 1px dashed rgba(245,238,220,0.18);
+    }
+    .shield::after{
+      content:"ᚠ ᚢ ᚦ";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50%,-50%);
+      color: rgba(111,212,255,0.60);
+      font-weight:950;
+      letter-spacing: 4px;
+      text-shadow: 0 0 18px rgba(111,212,255,0.20);
+    }
+
+    .hero-text{
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.24);
+      box-shadow: var(--shadow2);
+      padding: 16px;
+      min-width:0;
+    }
+    .hero-text h1{
+      margin:0 0 8px 0;
+      font-size: 28px;
+      font-weight: 980;
+    }
+    .hero-text p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.55;
+    }
+
+    /* =========================
+       LISTA / CARDS (base Minutos Psi)
+       ========================= */
+    .content{
+      padding: 0 18px 30px;
+    }
+    .section-title{
+      margin: 18px 0 12px 0;
+      font-size: 18px;
+      font-weight: 950;
+      color: rgba(245,238,220,0.92);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* Accordion (igual ao Minutos Psi) */
+    .topic{
+      padding:0;
+      overflow:hidden;
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.24);
+      box-shadow: var(--shadow2);
+      min-width:0;
+    }
+    .topic-head{
+      width:100%;
+      border:0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      background:transparent;
+      color:var(--text);
+      cursor:pointer;
+      text-align:left;
+    }
+    .topic-title{
+      margin:0;
+      font-size:16px;
+      font-weight:980;
+      letter-spacing:0.2px;
+      color: rgba(245,238,220,0.94);
+    }
+    .topic-arrow{
+      width:34px;height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      display:grid;place-items:center;
+      flex:0 0 auto;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      color: rgba(230,207,136,0.92);
+      font-weight:950;
+    }
+    .topic.open .topic-arrow{
+      transform: rotate(180deg);
+      border-color: rgba(111,212,255,0.35);
+      background: rgba(111,212,255,0.10);
+      color: rgba(245,238,220,0.95);
+    }
+    .topic-body{
+      padding: 0 16px 16px 16px;
+      color: var(--muted);
+      display:none;
+    }
+    .topic.open .topic-body{display:block;}
+    .topic-body p{
+      margin:0 0 10px 0;
+      line-height:1.5;
+      font-size:13px;
+    }
+
+    /* Vídeo embutido (não abre no YouTube) */
+    .video{
+      margin-top: 10px;
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.34);
+    }
+    iframe{
+      width:100%;
+      height: 320px;
+      border:0;
+      display:block;
+    }
+
+    .empty{
+      display:none;
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,0.14);
+      color: var(--muted);
+      background: rgba(0,0,0,0.18);
+    }
+
+    @media (max-width: 980px){
+      .app{grid-template-columns: 1fr;}
+      .sidebar{position:relative;height:auto;}
+      .grid{grid-template-columns: 1fr;}
+      iframe{height: 260px;}
+      .hero-grid{grid-template-columns: 1fr;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- =========================
+         MENU ESQUERDO
+         ========================= -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-top">
+          <div class="sigil">Ω</div>
+          <div>
+            <!-- MUDE AQUI -->
+            <div class="brand-title">Manual dos Mitos</div>
+            <div class="brand-sub">Assista aos vídeos direto aqui • Nórdica, Grega, Egípcia, Asteca, Inca e mais</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Busca -->
+      <div class="search" role="search" aria-label="Pesquisar mitos">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Buscar deus, herói, criatura..." />
+        <button id="clearBtn" class="clear" type="button">Limpar</button>
+      </div>
+
+      <!-- Botões/abas (clique troca a seção visível) -->
+      <nav class="menu" aria-label="Mitologias">
+        <!-- MUDE/ADICIONE ABAS AQUI -->
+        <button class="menu-btn active" data-tab="nordico">Nórdica</button>
+        <button class="menu-btn" data-tab="grego">Grega</button>
+        <button class="menu-btn" data-tab="egipcio">Egípcia</button>
+        <button class="menu-btn" data-tab="asteca">Asteca</button>
+        <button class="menu-btn" data-tab="inca">Inca</button>
+        <button class="menu-btn" data-tab="japonesa">Japonesa</button>
+        <button class="menu-btn" data-tab="celtica">Céltica</button>
+        <button class="menu-btn" data-tab="hindu">Hindu</button>
+      </nav>
+
+      <div class="sidebar-foot">
+        📖⚡ Bem-vindo ao Manual dos Mitos ⚡📖                 
+Aqui você vai explorar as mitologias do mundo como nunca antes:   histórias épicas,   deuses poderosos, criaturas lendárias e os mistérios que atravessam culturas e séculos.
+      </div>
+    </aside>
+
+    <!-- =========================
+         CONTEÚDO
+         ========================= -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="topbar-title">Galeria</div>
+          <div class="crumb" id="crumb">Mitologia: <b>Nórdica</b></div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-stage">
+          <div class="museum-art" aria-hidden="true">
+            <div class="statue"></div>
+            <div class="pyramid"></div>
+            <div class="shield"></div>
+          </div>
+
+          <div class="hero-grid">
+            <div class="hero-text">
+              <h1 id="heroTitle">Mitologia Nórdica</h1>
+              <p id="heroDesc">
+                Explore deuses, criaturas e lendas nórdicas. Clique no título de um item para abrir o resumo e assistir ao vídeo aqui mesmo.
+              </p>
+            </div>
+
+            <div class="hero-text">
+              <h1>Como usar</h1>
+              <p>
+                1) Escolha a mitologia no menu.<br/>
+                2) Pesquise por nome (ex.: “Odin”, “Zeus”, “Anúbis”).<br/>
+                3) Clique no título do card para ver o vídeo embutido.<br/>
+                4) Para adicionar conteúdo: copie um card e edite título, texto e <b>data-youtube</b>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="section-title" id="listTitle">Nórdica — Vídeos</div>
+
+        <!-- =========================
+             GRID DE CARDS
+             ========================= -->
+        <div class="grid" id="grid">
+
+          <!-- =========================================================
+            ✅ CARD DE VÍDEO (COPIE ESTE BLOCO PARA ADICIONAR MAIS)
+            1) data-tab = nordico / grego / egipcio / asteca / inca / japonesa / celtica / hindu ...
+            2) MUDE o título em <h3 data-title>...</h3>
+            3) MUDE o resumo em <p data-summary>...</p>
+            4) COLE o link completo do YouTube em data-youtube="https://www.youtube.com/watch?v=..."
+               (pode ser youtu.be ou shorts também)
+          ========================================================== -->
+
+          <!-- ===== NÓRDICA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="nordico">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Odin — Runas e Yggdrasil</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>O mito do sacrifício de Odin em Yggdrasil e a conquista das runas: destino, conhecimento e poder.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Odin — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <article class="topic" data-accordion data-topic data-tab="nordico">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Thor — Martelo Mjölnir</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Mjölnir como símbolo de proteção e tempestade: por que o martelo é central no imaginário nórdico.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://youtu.be/SEU_VIDEO_AQUI"
+                  title="Thor — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== GREGA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="grego">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Zeus — O Raio do Olimpo</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Como Zeus consolida o poder após a Titanomaquia e por que o raio vira seu símbolo supremo.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Zeus — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <article class="topic" data-accordion data-topic data-tab="grego">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Hades — O Submundo</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Reinos do submundo, julgamento das almas e o papel de Hades na ordem cósmica grega.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Hades — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== EGÍPCIA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="egipcio">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Anúbis — Pesagem do Coração</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Anúbis no Duat: rituais, mumificação e o julgamento de Maat na travessia pós-vida.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Anúbis — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <article class="topic" data-accordion data-topic data-tab="egipcio">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Rá — A Barca Solar</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>A jornada noturna e diurna de Rá e o combate contra Apep: ciclo, ordem e caos.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Rá — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== ASTECA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="asteca">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Quetzalcóatl — Serpente Emplumada</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Criação, conhecimento e símbolo de transformação na Mesoamérica: por que Quetzalcóatl é tão marcante.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Quetzalcóatl — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== INCA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="inca">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Inti — O Sol Inca</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Inti como centro da cosmovisão andina: rituais, poder político e a relação com o império.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Inti — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== JAPONESA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="japonesa">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Amaterasu — A Caverna do Sol</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>O mito shinto da retirada de Amaterasu e o retorno da luz: ordem, rituais e renovação.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Amaterasu — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== CÉLTICA ===== -->
+          <article class="topic" data-accordion data-topic data-tab="celtica">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Morrígan — Corvos e Destino</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>Figura ambígua nas lendas celtas: profecia, batalha e transformação, ligada aos corvos.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Morrígan — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== HINDU ===== -->
+          <article class="topic" data-accordion data-topic data-tab="hindu">
+            <button class="topic-head" type="button">
+              <h3 class="topic-title" data-title>Shiva — Destruição e Renovação</h3>
+              <span class="topic-arrow">⌄</span>
+            </button>
+            <div class="topic-body">
+              <p data-summary>O papel de Shiva no ciclo cósmico: destruição como passagem para renascimento e transformação.</p>
+              <div class="video">
+                <iframe
+                  data-youtube="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI"
+                  title="Shiva — YouTube"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="empty" id="emptyState">Nada encontrado nessa mitologia com esse termo. Tente outra palavra.</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ======================
+    // 1) TABS (mitologias) no menu esquerdo
+    // 2) BUSCA filtra por título/resumo dentro da aba atual
+    // 3) ACCORDION abre/fecha (um por vez)
+    // 4) YOUTUBE: cola link completo em data-youtube e converte para embed
+    // ======================
+
+    const tabButtons = Array.from(document.querySelectorAll(".menu-btn[data-tab]"));
+    const searchInput = document.getElementById("searchInput");
+    const clearBtn = document.getElementById("clearBtn");
+    const topics = Array.from(document.querySelectorAll("[data-topic]"));
+    const emptyState = document.getElementById("emptyState");
+
+    const crumb = document.getElementById("crumb");
+    const heroTitle = document.getElementById("heroTitle");
+    const heroDesc  = document.getElementById("heroDesc");
+    const listTitle = document.getElementById("listTitle");
+
+    const TAB_META = {
+      nordico:  { name: "Nórdica",  desc: "Explore deuses, criaturas e lendas nórdicas. Clique no título para abrir o vídeo embutido." },
+      grego:    { name: "Grega",    desc: "Mitologia clássica: olimpianos, heróis e monstros. Assista aos vídeos direto no site." },
+      egipcio:  { name: "Egípcia",  desc: "Deuses, Duat e símbolos do Egito antigo. Abra os cards para ver os vídeos." },
+      asteca:   { name: "Asteca",   desc: "Cosmovisão mesoamericana: divindades e rituais. Vídeos embutidos aqui mesmo." },
+      inca:     { name: "Inca",     desc: "Mitologia andina: Inti, Viracocha e lendas do império. Assista no site." },
+      japonesa: { name: "Japonesa", desc: "Shinto, kami e mitos do Japão. Clique para abrir o card e assistir." },
+      celtica:  { name: "Céltica",  desc: "Lendas celtas, deuses e símbolos. Vídeos embutidos na galeria." },
+      hindu:    { name: "Hindu",    desc: "Divindades e histórias da tradição hindu. Clique e assista sem sair do site." },
+    };
+
+    let activeTab = "nordico";
+
+    function normalizeText(s){
+      return (s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function setActiveTab(tab){
+      activeTab = tab;
+      tabButtons.forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === tab));
+
+      const meta = TAB_META[tab] || { name: tab, desc: "Conteúdo organizado por mitologia." };
+      crumb.innerHTML = `Mitologia: <b>${meta.name}</b>`;
+      heroTitle.textContent = `Mitologia ${meta.name}`;
+      heroDesc.textContent = meta.desc;
+      listTitle.textContent = `${meta.name} — Vídeos`;
+
+      // limpa busca ao trocar de aba (opcional; pode remover se quiser manter)
+      searchInput.value = "";
+      applyFilters();
+      closeAllAccordions();
+    }
+
+    function closeAllAccordions(){
+      topics.forEach(t => t.classList.remove("open"));
+    }
+
+    function applyFilters(){
+      const term = normalizeText(searchInput.value);
+      let visible = 0;
+
+      topics.forEach(card => {
+        const tab = card.getAttribute("data-tab");
+        const title = normalizeText(card.querySelector("[data-title]")?.textContent || "");
+        const summary = normalizeText(card.querySelector("[data-summary]")?.textContent || "");
+        const matchTab = tab === activeTab;
+        const matchTerm = !term || title.includes(term) || summary.includes(term);
+
+        const show = matchTab && matchTerm;
+        card.style.display = show ? "" : "none";
+        if(show) visible++;
+        card.classList.remove("open"); // mantém a lista limpa ao filtrar
+      });
+
+      emptyState.style.display = visible ? "none" : "block";
+    }
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => setActiveTab(btn.getAttribute("data-tab")));
+    });
+
+    searchInput.addEventListener("input", applyFilters);
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      applyFilters();
+      searchInput.focus();
+    });
+
+    // ======================
+    // ACCORDION (um aberto por vez)
+    // ======================
+    function closeAll(except){
+      topics.forEach(item => {
+        if(item !== except) item.classList.remove("open");
+      });
+    }
+
+    topics.forEach(item => {
+      const head = item.querySelector(".topic-head");
+      head?.addEventListener("click", () => {
+        const isOpen = item.classList.contains("open");
+        closeAll(item);
+        item.classList.toggle("open", !isOpen);
+      });
+    });
+
+    // ======================
+    // YouTube por link completo -> embed
+    // Cola o link no data-youtube="..."
+    // ======================
+    function toYouTubeEmbedUrl(url){
+      if(!url) return "";
+      const u = String(url).trim();
+
+      // watch?v=VIDEOID
+      const watch = u.match(/[?&]v=([a-zA-Z0-9_-]{6,})/);
+      if(watch) return `https://www.youtube.com/embed/${watch[1]}`;
+
+      // youtu.be/VIDEOID
+      const short = u.match(/youtu\.be\/([a-zA-Z0-9_-]{6,})/);
+      if(short) return `https://www.youtube.com/embed/${short[1]}`;
+
+      // shorts/VIDEOID
+      const shorts = u.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{6,})/);
+      if(shorts) return `https://www.youtube.com/embed/${shorts[1]}`;
+
+      // embed/VIDEOID
+      const embed = u.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{6,})/);
+      if(embed) return `https://www.youtube.com/embed/${embed[1]}`;
+
+      return "";
+    }
+
+    function initYouTubeEmbeds(){
+      const iframes = document.querySelectorAll("iframe[data-youtube]");
+      iframes.forEach(frame => {
+        const link = frame.getAttribute("data-youtube") || "";
+        const embed = toYouTubeEmbedUrl(link);
+        if(embed) frame.src = embed;
+      });
+    }
+
+    initYouTubeEmbeds();
+
+    // init
+    setActiveTab(activeTab);
+  </script>
+</body>
+</html>
