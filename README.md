@@ -1,1 +1,1 @@
-# Site-Manual-dos-Mitos
+# Manual-dos-Mitos
